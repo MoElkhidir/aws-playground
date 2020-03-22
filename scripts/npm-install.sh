@@ -1,3 +1,5 @@
 #!/bin/bash
+sudo su ubuntu
 whoami
-npm i
+su - ubuntu -c "npm install"
+
