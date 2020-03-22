@@ -1,4 +1,3 @@
 #!/bin/bash
-sudo su root
-sudo su ubuntu
+whoami
 npm i
