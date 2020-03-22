@@ -5,6 +5,5 @@
 . /home/ubuntu/.bashrc
 
 echo 'mo'
-
-sudo npm install
+npm install
 
