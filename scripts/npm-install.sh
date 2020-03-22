@@ -4,6 +4,7 @@
 . /home/ubuntu/.profile
 . /home/ubuntu/.bashrc
 
-echo 'mo'
+cd /home/ubuntu/app
+echo "I am here: $(pwd)"
 npm install
 
