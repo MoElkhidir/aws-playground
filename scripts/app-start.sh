@@ -7,4 +7,4 @@ ls -a
 . /home/ubuntu/.profile
 . /home/ubuntu/.bashrc
 
-node .
+npm start
