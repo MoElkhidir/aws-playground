@@ -6,5 +6,6 @@
 
 cd /home/ubuntu/app
 echo "I am here: $(pwd)"
+npm install forever -g
 npm install
 
