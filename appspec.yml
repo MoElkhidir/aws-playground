@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/app/
+hooks:
+  BeforeInstall:
+    - location: scripts/npm-install.sh
+      runas: root
+      timeout: 300
+  ApplicationStart:
+    - location: scripts/app-start.sh
+      runas: root
+      timeout: 60
