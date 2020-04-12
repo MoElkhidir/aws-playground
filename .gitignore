@@ -103,5 +103,8 @@ dist
 # TernJS port file
 .tern-port
 
-# Terrafrom variables
-/terraform/*.tfvars
+# Terrafrom 
+.terraform
+/terraform/*/*.tfvars
+/terraform/*/terraform.tfstate
+/terraform/*/terraform.tfstate.*
