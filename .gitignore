@@ -105,6 +105,6 @@ dist
 
 # Terrafrom 
 .terraform
-/terraform/*/*.tfvars
+/terraform/*/*.secret.tfvars
 /terraform/*/terraform.tfstate
 /terraform/*/terraform.tfstate.*
