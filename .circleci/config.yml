@@ -22,7 +22,7 @@ workflows:
     jobs:
       - aws-ecr/build-and-push-image:
           requires:
-            - build
+            - build/build
           account-url: AWS_ECR_URL
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
