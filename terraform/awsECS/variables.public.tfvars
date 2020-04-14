@@ -6,7 +6,7 @@ public_subnet_cidr="10.0.0.0/24"
 environment="staging"
 
 # ECR
-registery_name="mo-registery"
+registery_name="staging"
 
 
 # ECS
