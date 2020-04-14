@@ -1,6 +1,8 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
+  aws-ecr: circleci/aws-ecr@6.8.2
+  aws-ecs: circleci/aws-ecs@01.1.0
 jobs:
   build:
     executor:
@@ -10,7 +12,16 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
+  push-to-ecr:
+    - aws-ecr/build_and_push_image:
+       account-url: AWS_ECR_URL
+       aws-access-key-id: AWS_ACCESS_KEY
+       aws-secret-access-key: AWS_SECRET_KEY
+      tag: "${AWS_ECR_URL}:latest"
+
+  
 workflows:
-    build-and-test:
+    build:
       jobs:
         - build
+        - push-to-ecr
