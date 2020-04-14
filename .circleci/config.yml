@@ -15,11 +15,9 @@ jobs:
 
   
 workflows:
-  build:
+  build-and-deploy:
     jobs:
       - build
-  deploy:
-    jobs:
       - aws-ecr/build-and-push-image:
           requires:
             - build/build
