@@ -25,4 +25,4 @@ workflows:
           aws-access-key-id: AWS_ACCESS_KEY
           aws-secret-access-key: AWS_SECRET_KEY
           repo: AWS_REPO_NAME
-          tag: "${AWS_ECR_URL}:latest"
+          tag: "latest"
