@@ -8,14 +8,12 @@ workflows:
     jobs:
       - aws-ecr/build-and-push-image:
           account-url: AWS_ECR_URL
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_SECRET_KEY
           repo: "${AWS_REPO_NAME}"
           tag: "latest"
       - aws-ecs/run-task:
           requires:
             - aws-ecr/build-and-push-image
           cluster: 'CLUSTER_NAME'
-          task-definition: ''
+          task-definition: 'TASK_DEFINITION'
           awsvpc: false
           launch-type: EC2
