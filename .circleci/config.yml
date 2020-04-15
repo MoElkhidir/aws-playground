@@ -13,7 +13,7 @@ workflows:
       - aws-ecs/run-task:
           requires:
             - aws-ecr/build-and-push-image
-          cluster: 'CLUSTER_NAME'
-          task-definition: 'TASK_DEFINITION'
+          cluster: '${CLUSTER_NAME}'
+          task-definition: '${TASK_DEFINITION}'
           awsvpc: false
           launch-type: EC2
