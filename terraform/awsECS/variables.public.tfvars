@@ -1,8 +1,8 @@
 # network
 aws_region="eu-west-1"
-aws_availability_zone="eu-west-1a"
+aws_availability_zone=["eu-west-1a","eu-west-1b"]
 vpc_cidr="10.0.0.0/16"
-public_subnet_cidr="10.0.0.0/24"
+public_subnet_cidr=["10.0.0.0/24", "10.0.1.0/24"]
 environment="staging"
 
 # ECR

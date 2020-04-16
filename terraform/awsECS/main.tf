@@ -71,7 +71,7 @@ module "ecs" {
   key_pair_name = module.iam.key_pair_name
   iam_instance_profile_id = module.iam.ecs_ec2_role_id
   vpc_id = module.network.vpc_id
-  subnet_id = module.network.subnet_id
+  subnet_id = module.network.subnet1_id
   min_tasks_size = var.min_tasks_size
   max_tasks_size = var.max_tasks_size
 }
@@ -85,4 +85,7 @@ module "app" {
   cluster_id = module.ecs.cluster_id
   ecs_service_role_arn = module.iam.ecs_service_role_arn
   ecs_service_attachment_name = module.iam.ecs_service_attachment_name
+  vpc_id = module.network.vpc_id
+  subnet_ids = [module.network.subnet1_id, module.network.subnet2_id]
+  environment = var.environment
 }

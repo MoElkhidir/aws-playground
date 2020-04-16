@@ -2,7 +2,9 @@
 
 variable "vpc_cidr" {}
 variable "environment" {}
-variable "availability_zone" {}
+variable "availability_zone" {
+  type = list
+}
 variable "subnet_cidr" {}
 
 # resources
@@ -13,17 +15,27 @@ module "vpc" {
     environment = var.environment
 }
 
-module "subnet" {
+module "subnet1" {
   source  = "./subnet"
   vpc_id = module.vpc.vpc_id
-  subnet_cidr = var.subnet_cidr
-  availability_zone = var.availability_zone
-  name    = "public_subnet"
+  subnet_cidr = var.subnet_cidr[0]
+  availability_zone = var.availability_zone[0]
+  name    = "public_subnet1"
   environment = var.environment
   assign_public_ip = true
   internet_gateway_id = module.vpc.internet_gateway_id
 }
 
+module "subnet2" {
+  source  = "./subnet"
+  vpc_id = module.vpc.vpc_id
+  subnet_cidr = var.subnet_cidr[1]
+  availability_zone = var.availability_zone[1]
+  name    = "public_subnet2"
+  environment = var.environment
+  assign_public_ip = true
+  internet_gateway_id = module.vpc.internet_gateway_id
+}
 
 # we might need internt gate way here
 
@@ -32,6 +44,10 @@ output "vpc_id" {
   value       = module.vpc.vpc_id 
 }
 
-output "subnet_id" {
-  value       = module.subnet.subnet_id
+output "subnet1_id" {
+  value       = module.subnet1.subnet_id
+}
+
+output "subnet2_id" {
+  value       = module.subnet2.subnet_id
 }

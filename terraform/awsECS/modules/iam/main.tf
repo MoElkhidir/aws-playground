@@ -101,6 +101,31 @@ EOF
 
 }
 
+resource "aws_iam_role_policy" "ecs_service-role-policy" {
+  name = "ecs_service-role-policy"
+  role = "${aws_iam_role.ecs-service-role.name}"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:Describe*",
+        "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+        "elasticloadbalancing:DeregisterTargets",
+        "elasticloadbalancing:Describe*",
+        "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+        "elasticloadbalancing:RegisterTargets"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_iam_policy_attachment" "ecs-service-attach" {
   name       = "ecs-service-attach"
   roles      = [aws_iam_role.ecs-service-role.name]

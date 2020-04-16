@@ -52,7 +52,7 @@ resource "aws_launch_configuration" "ecs-example-launch-config" {
 }
 
 resource "aws_autoscaling_group" "ecs-example-autoscaling" {
-  name                 = "ecs-auto-scaling"
+  name                 = var.cluster_name
   vpc_zone_identifier  = [var.subnet_id]
   launch_configuration = aws_launch_configuration.ecs-example-launch-config.name
   min_size             = var.min_tasks_size
@@ -65,10 +65,17 @@ resource "aws_autoscaling_group" "ecs-example-autoscaling" {
 }
 
 resource "aws_ecs_capacity_provider" "ecs_capacity_provider" {
-  name = "${var.cluster_name}_capacity_provider"
+  name = aws_autoscaling_group.ecs-example-autoscaling.name
 
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.ecs-example-autoscaling.arn
+
+    managed_scaling {
+      maximum_scaling_step_size = 1000
+      minimum_scaling_step_size = 1
+      status                    = "ENABLED"
+      target_capacity           = 1
+    }
   }
 }
 
@@ -78,6 +85,8 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   capacity_providers = [aws_ecs_capacity_provider.ecs_capacity_provider.name]
   default_capacity_provider_strategy {
     capacity_provider = aws_ecs_capacity_provider.ecs_capacity_provider.name
+    weight = 1
+    base = 1
   }
 }
 
