@@ -10,10 +10,9 @@ workflows:
           account-url: AWS_ECR_URL
           repo: "${AWS_REPO_NAME}"
           tag: "latest"
-      - aws-ecs/run-task:
+      - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build-and-push-image
-          cluster: '${CLUSTER_NAME}'
-          task-definition: '${TASK_DEFINITION}'
-          awsvpc: false
-          launch-type: EC2
+          family: '${TASK_DEFINITION_FAMILY}'
+          cluster-name: '${CLUSTER_NAME}'
+          force-new-deployment: true
