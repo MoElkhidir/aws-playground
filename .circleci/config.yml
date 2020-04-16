@@ -13,6 +13,7 @@ workflows:
       - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build-and-push-image
-          family: '${TASK_DEFINITION_FAMILY}'
-          cluster-name: '${CLUSTER_NAME}'
+          family: "${TASK_DEFINITION_FAMILY}"
+          cluster-name: "${CLUSTER_NAME}"
           force-new-deployment: true
+          service-name: "${SERVICE_NAME}"
