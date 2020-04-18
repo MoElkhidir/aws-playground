@@ -10,6 +10,12 @@ variable "environment" {}
 variable "subnet_ids" {
   type        = list
 }
+variable "application_load_balancer_security_group_id" {}
+variable "virtual_dependency" {
+  type    = any
+  default = null
+}
+
 # data
 data "template_file" "app-task-definition-template" {
   template = file("${path.module}/templates/app.template.json")
@@ -25,35 +31,12 @@ resource "aws_ecs_task_definition" "app-task-definition" {
   family                = var.app_family
   container_definitions = data.template_file.app-task-definition-template.rendered
 }
+  
+  
   #Application Load Balancer
-
-  resource "aws_security_group" "lb_sg" {
-    description = "controls access to the application ALB"
-
-    vpc_id = var.vpc_id
-    name   = "${var.environment}_load_balancer_security_group"
-
-    ingress {
-      protocol    = "tcp"
-      from_port   = 0
-      to_port     = 0
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    egress {
-      from_port = 0
-      to_port   = 0
-      protocol  = "-1"
-
-      cidr_blocks = [
-        "0.0.0.0/0",
-      ]
-    }
-  }
-
   resource "aws_lb_target_group" "load-balancer-target-group" {
     name     = var.environment
-    port     = 3000
+    port     = 80
     protocol = "HTTP"
     vpc_id   = var.vpc_id
   }
@@ -62,10 +45,12 @@ resource "aws_ecs_task_definition" "app-task-definition" {
     name            = var.environment
     load_balancer_type = "application"
     subnets         = var.subnet_ids
-    security_groups = [aws_security_group.lb_sg.id]
+    security_groups = [var.application_load_balancer_security_group_id]
     tags = {
-    Environment = var.environment
-  }
+      Environment = var.environment
+    }
+
+    depends_on = [var.virtual_dependency]
   }
 
   resource "aws_lb_listener" "load-balancer-listner" {
@@ -103,6 +88,9 @@ resource "aws_ecs_service" "myapp-service" {
   depends_on      = [var.ecs_service_attachment_name]
   iam_role        = var.ecs_service_role_arn
 
+  # we specify the target group which the instance will be part of so the load balancer forward the requests to.
+  # we specify the container and it's port because we use dynamic mapping, so when a container is started for the first time
+  # the load balancer knows how to map the ec2 port to the container port 
   load_balancer {
     target_group_arn = aws_lb_target_group.load-balancer-target-group.arn
     container_name = var.app_name

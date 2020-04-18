@@ -1,6 +1,12 @@
+terraform {
+  required_providers {
+    aws = "~> 2.58.0"
+  }
+}
+
 provider "aws" {
   region = var.aws_region
-  version = "~> 2.57"
+  version = "~> 2.58.0"
   access_key=var.aws_access_key
   secret_key=var.aws_secret_key
 }
@@ -62,6 +68,14 @@ module "iam" {
 
 }
 
+module "security_groups" {
+  source  = "./modules/ec2/security-groups"
+
+  cluster_name = var.cluster_name
+  vpc_id = module.network.vpc_id
+  environment = var.environment
+}
+
 module "ecs" {
   source  = "./modules/ecs"
 
@@ -74,6 +88,9 @@ module "ecs" {
   subnet_id = module.network.subnet1_id
   min_tasks_size = var.min_tasks_size
   max_tasks_size = var.max_tasks_size
+  ecs_security_group_id = module.security_groups.ecs_security_group_id
+
+  virtual_dependency = [module.security_groups.ecs_security_group_id]
 }
 
 module "app" {
@@ -88,4 +105,8 @@ module "app" {
   vpc_id = module.network.vpc_id
   subnet_ids = [module.network.subnet1_id, module.network.subnet2_id]
   environment = var.environment
+  application_load_balancer_security_group_id = module.security_groups.application_load_balancer_security_group_id
+
+  virtual_dependency = [module.security_groups.application_load_balancer_security_group_id]
+
 }
