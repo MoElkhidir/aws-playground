@@ -4,15 +4,6 @@ orbs:
   aws-ecs: circleci/aws-ecs@01.1.0
 
 jobs:
-  build-and-push-app-image:
-    executor: aws-ecr/default
-    steps:
-      - aws-ecr/build-and-push-image:
-          account-url: AWS_ECR_URL # this should be the name minus the "/repo name"
-          repo: "${AWS_REPO_NAME}"
-          tag: "latest"
-          path: "./app/"
-  
   build-and-push-nginx-image:
     executor: aws-ecr/default
     steps:
@@ -21,6 +12,15 @@ jobs:
           repo: "${AWS_NGINX_REPO_NAME}"
           tag: "latest"
           path: "./nginx/"
+          
+  build-and-push-app-image:
+    executor: aws-ecr/default
+    steps:
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ECR_URL # this should be the name minus the "/repo name"
+          repo: "${AWS_REPO_NAME}"
+          tag: "latest"
+          path: "./app/"
 
   deploy-app:
     docker:
