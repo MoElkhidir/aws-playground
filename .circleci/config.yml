@@ -35,7 +35,9 @@ jobs:
 workflows:
   build-and-deploy:
     jobs:
-      - build-app-image
+      - build-and-push-nginx-image
+      - build-and-push-app-image
       - deploy-app:
           requires:
-            - build-app-image
+            - build-and-push-nginx-image
+            - build-and-push-app-image
