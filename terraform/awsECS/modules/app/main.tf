@@ -22,7 +22,7 @@ data "template_file" "app-task-definition-template" {
   template = file("${path.module}/templates/app.template.json")
   vars = {
     REPOSITORY_URL = replace(var.ecr_url, "https://", "")
-    NGINX_REPOSITORY_URL = replace(var.ecr_url, "https://", "")
+    NGINX_REPOSITORY_URL = replace(var.nginx_ecr_url, "https://", "")
     APP_NAME = var.app_name
   }
 }
@@ -32,6 +32,7 @@ data "template_file" "app-task-definition-template" {
 resource "aws_ecs_task_definition" "app-task-definition" {
   family                = var.app_family
   container_definitions = data.template_file.app-task-definition-template.rendered
+  network_mode = "bridge"
 }
   
   

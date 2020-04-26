@@ -103,7 +103,7 @@ module "ecs" {
 module "app" {
   source  = "./modules/app"
   ecr_url = module.ecr.ecr_url
-  nginx_ecr_url = module.nginx.ecr_url
+  nginx_ecr_url = module.ecr-nginx.ecr_url
   app_family = var.environment
   app_name = var.app_name
   cluster_id = module.ecs.cluster_id

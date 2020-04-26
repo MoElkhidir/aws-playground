@@ -1,5 +1,4 @@
-{
-  "containerDefinitions": [
+[
     {
       "essential": true,
       "memory": 256,
@@ -26,9 +25,11 @@
       "command": [
         "npm",
         "start"
+      ],
+      "portMappings": [
+        {
+          "containerPort": 3000
+        }
       ]
     }
-  ],
-  "networkMode": "bridge",
-   "family": "application-stack"
-}
+  ]
