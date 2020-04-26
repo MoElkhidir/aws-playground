@@ -8,11 +8,11 @@ jobs:
     executor: aws-ecr/default
     steps:
       - aws-ecr/build-and-push-image:
-          account-url: AWS_NGINX_ECR_URL # this should be the name minus the "/repo name"
-          repo: "${AWS_NGINX_REPO_NAME}"
+          account-url: AWS_NGINIX_ECR_URL # this should be the name minus the "/repo name"
+          repo: "${AWS_NGINIX_REPO_NAME}"
           tag: "latest"
-          path: "./nginx/"
-          
+          path: "./nginix/"
+
   build-and-push-app-image:
     executor: aws-ecr/default
     steps:
