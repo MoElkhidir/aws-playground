@@ -27,7 +27,8 @@ provider "aws" {
   variable "public_subnet_cidr" {}
 
   # ECR
-  variable "registery_name" {}
+  variable "app_registery_name" {}
+  variable "nginx_registery_name" {}
 
   # IAM
   variable "public_key_name" {}
@@ -57,7 +58,13 @@ module "network" {
 module "ecr" {
   source  = "./modules/ecr"
 
-  registery_name = var.registery_name
+  registery_name = var.app_registery_name
+}
+
+module "ecr-nginx" {
+  source  = "./modules/ecr"
+
+  registery_name = var.nginx_registery_name
 }
 
 module "iam" {
@@ -95,8 +102,8 @@ module "ecs" {
 
 module "app" {
   source  = "./modules/app"
-
   ecr_url = module.ecr.ecr_url
+  nginx_ecr_url = module.nginx.ecr_url
   app_family = var.environment
   app_name = var.app_name
   cluster_id = module.ecs.cluster_id

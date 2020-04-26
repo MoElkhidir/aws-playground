@@ -1,5 +1,6 @@
 # variables
 variable "ecr_url" {}
+variable "nginx_ecr_url" {}
 variable "app_family" {}
 variable "app_name" {}
 variable "cluster_id" {}
@@ -21,6 +22,7 @@ data "template_file" "app-task-definition-template" {
   template = file("${path.module}/templates/app.template.json")
   vars = {
     REPOSITORY_URL = replace(var.ecr_url, "https://", "")
+    NGINX_REPOSITORY_URL = replace(var.ecr_url, "https://", "")
     APP_NAME = var.app_name
   }
 }

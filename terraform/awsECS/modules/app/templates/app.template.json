@@ -1,17 +1,34 @@
-[
-  {
-    "essential": true,
-    "memory": 256,
-    "name": "${APP_NAME}",
-    "cpu": 256,
-    "image": "${REPOSITORY_URL}:latest",
-    "workingDirectory": "/usr/app",
-    "command": ["npm", "start"],
-    "portMappings": [
+{
+  "containerDefinitions": [
+    {
+      "essential": true,
+      "memory": 256,
+      "name": "${APP_NAME}-nginx",
+      "cpu": 256,
+      "image": "${NGINX_REPOSITORY_URL}:latest",
+      "portMappings": [
         {
-            "containerPort": 3000,
-            "hostPort": 0
+          "containerPort": 80,
+          "hostPort": 0
         }
-    ]
-  }
-]
+      ],
+      "links": [
+        "${APP_NAME}"
+      ]
+    },
+    {
+      "essential": true,
+      "memory": 256,
+      "name": "${APP_NAME}",
+      "cpu": 256,
+      "image": "${REPOSITORY_URL}:latest",
+      "workingDirectory": "/usr/app",
+      "command": [
+        "npm",
+        "start"
+      ]
+    }
+  ],
+  "networkMode": "bridge",
+   "family": "application-stack"
+}

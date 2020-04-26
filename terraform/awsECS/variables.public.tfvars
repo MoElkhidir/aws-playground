@@ -6,7 +6,8 @@ public_subnet_cidr=["10.0.0.0/24", "10.0.1.0/24"]
 environment="staging"
 
 # ECR
-registery_name="staging"
+app_registery_name="staging"
+nginx_registery_name="nginx-staging"
 
 
 # ECS
