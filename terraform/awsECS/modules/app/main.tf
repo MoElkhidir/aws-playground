@@ -42,6 +42,11 @@ resource "aws_ecs_task_definition" "app-task-definition" {
     port     = 80
     protocol = "HTTP"
     vpc_id   = var.vpc_id
+    
+    health_check {
+      path = "/status"
+      matcher ="200"
+    }
   }
 
   resource "aws_lb" "main-load-balancer" {
@@ -96,8 +101,8 @@ resource "aws_ecs_service" "myapp-service" {
   # the load balancer knows how to map the ec2 port to the container port 
   load_balancer {
     target_group_arn = aws_lb_target_group.load-balancer-target-group.arn
-    container_name = var.app_name
-    container_port = 3000
+    container_name = "${var.app_name}-nginx"
+    container_port = 80
   }
 
   lifecycle {
